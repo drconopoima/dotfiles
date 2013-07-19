@@ -1,0 +1,7 @@
+
+su - postgres
+psql postgres -tAc "SELECT * FROM pg_roles"
+
+\list # lists the databases
+
+

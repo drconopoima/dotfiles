@@ -1,0 +1,84 @@
+# terminal
+rails new store -d postgresql -T
+cd store
+cp config/database.yml config/database.example.yml
+vi config/database.yml config/database.example.yml
+    # remove username and passwd
+rails g scaffold product name saledate:datetime price:decimal --skip-stylesheets
+rake db:migrate
+
+gem 'zurb-foundation'
+bundle
+
+rails g foundation:install    # generates/appends some files
+  assets/javascript/application.js
+  assets/stylesheets/applicatoin.css and assets/stylesheets/foundation_and_overrides.scss
+  views/layouts/application.html/erb
+
+#=======================================
+# layouts/application.html.erb
+#=======================================
+<nav class="top-bar">
+  <ul class="title-area">
+    <li class="name">
+      <h1><%= link_to "Awesome Store", products_path %></a></h1>
+    </li>
+  </ul>
+  <section class="top-bar-section">
+    <ul class="right">
+      <li class="divider"></li>
+      <li><%= link_to "Browse Products", products_path %></li>
+      <li class="divider"></li>
+      <li><%= link_to "Price List" %></li>
+      <li class="divider"></li>
+      <li><%= link_to "Contact Us" %></li>
+      <li class="divider"></li>
+      <li><%= link_to "Cart" %></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="row">
+  <div class="small-8 columns"><%= yield %></div>
+  <div class="small-4 columns">
+    <h2 class="subheader">About Us</h2>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </div>
+</div>
+
+#=======================================
+# products/index.html.erb
+#=======================================
+<%= link_to 'New Product', new_product_path, class: "button radius" %>
+
+#=======================================
+# products/_form.html.erb
+#=======================================
+<div class="row collapse">
+  <div class="small-3 columns">
+    <%= f.label :name, class: "right inline" %>
+  </div>
+  <div class="small-9 columns"><%= f.text_field :name %></div>
+</div>
+<div class="row collapse">
+  <div class="small-3 columns">
+    <%= f.label :price, class: "right inline", title: "Price in USD", data: {tooltip: true} %>
+  </div>
+  <div class="small-9 columns"><%= f.text_field :price %></div>
+</div>
+<div class="row collapse">
+  <div class="small-9 small-offset-3 columns"><%= f.submit %></div>
+</div>
+
+#=======================================
+# assets/stylesheets/layout.css.scss
+#=======================================
+label.right {
+  padding-right: 10px
+}
+
+#=======================================
+# assets/stylesheets/foundation_and_overrides.css
+#=======================================
+$column-gutter: emCalc(60px);
+$topbar-bg: #212D48 !default;
