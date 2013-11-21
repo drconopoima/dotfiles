@@ -15942,7 +15942,7 @@ alias lsdd='ls -latr'                                 					# sort by date
 alias lsd='ls -l | grep "^d"'								# list only directories
 alias lsize='ls --sort=size -lhr'							# list by size
 alias lsl='ls -lah'                                   					# long list, human-readable
-alias ls='ls -hF --color'								# add colors for filetype recognition
+alias ls='ls -hFG' # add colors for filetype recognition
 alias lsnew='ls -Alh --color=auto --time-style=+%D | grep `date +%D`'
 alias lss='ls -shaxSr'                         			       			# sort by size
 alias lsss='ls -lrt | grep $1'								# to see something coming into ls output: lss
