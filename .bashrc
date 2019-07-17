@@ -2,6 +2,13 @@
 ################################### MY BASHRC FILE ################################### MY BASHRC FILE ################################### MY BASHRC FILE
 ######################################################################################################################################################
 
+
+
+
+
+
+
+
 ##################################################
 # 'About' section for 'The Ultimate Bashrc File' #
 ##################################################
@@ -13,8 +20,8 @@ cat <<EOF
 # The Ultimate Bashrc File			 #
 # .bashrc					 #
 # Creator:		Inameiname		 #
-# Version: 4.0			 		 #
-# Last modified: 	15 December 2011	 #
+# Version: 4.2			 		 #
+# Last modified: 	13 February 2014	 #
 # License:		GPLv3+			 #
 #						 #
 # Layout of this file:				 #
@@ -32,22 +39,18 @@ cat <<EOF
 # └── BASHRC ENDS HERE				 #
 #						 #
 # Latest Changes:				 #
-# 4.0 - 15/12/11 - Updated for Oneiric, but	 #
-# also backported for Natty; updated dups 	 #
-# section; workaround for 'debmaker' alias; auto-#
-# cleanup of temporary files at startup of 	 #
-# bashrc; moz/mozz; localIps; google-fonts; 	 #
-# bleachbitcleanup; keject; upalevel; 		 #
-# kindle_connect; kindle_disconnect; xzv; 	 #
-# google_chart; human_filesize; geoipme;	 #
-# nocomments; filext; piratebay; out; mid; 	 #
-# top_processes; allips; readfile; wma2mp3; 	 #
-# wma2ogg; dateformatcodes; lastfile; expandurl; #
-# ontime; mp3_tagging; 7z_it; right; showdiff	 #
-# biggest_user; total_video_length; spaceremover #
-#						 #
-# Diff between this one and Oneiric's:		 #
-#  debmaker, color-picker, randomwp, my aliases	 #
+# 4.2 - 13/02/14 - Added Liquid Prompt option;   #
+# Updates; added several aliases/functions; 	 #
+# now including several of my custom aliases and #
+# functions, contingent on having my custom 	 #
+# nautilus-/nemo- scripts			 #
+# 4.0+ - 27/11/13 - Tweaks for Ubuntu Saucy /	 #
+# Linux Mint Petra				 #
+# 4.0+ - 01/10/13 - Tweaks for Ubuntu Raring /	 #
+# Linux Mint Olivia				 #
+# 4.0+ - 12/09/12 - video_record, webcam_record	 #
+# updated tv-monitor-switch-end and		 #
+# tv-monitor-switch-start; ntm; remastersys-gtk	 #
 #			 			 #
 # Descripton:					 #
 # For those who love using the terminal, here is #
@@ -143,8 +146,8 @@ HISTCONTROL=ignoredups:ignorespace
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000000
-HISTFILESIZE=2000000
+HISTSIZE=1000
+HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -734,6 +737,20 @@ PS1='\[\033]0;\w\007\]\[\e[35;1m\]\u\[\e[0m\]\[\e[32m\]@\h\[\e[34m\]\w \[\e[33m\
 
 
 ##################################################
+# Liquid Prompt Command				 #
+##################################################
+
+# requires the code for 'liquid prompt', which can
+# be gotten using the following commands:
+# note: 'acpi' is for temperature
+# sudo apt-get install git acpi
+# git clone https://github.com/nojhan/liquidprompt.git ~/.liquidprompt
+# cp ~/.liquidprompt/liquidpromptrc-dist ~/.config/liquidpromptrc
+# . ~/.liquidprompt/liquidprompt
+
+
+
+##################################################
 # More PROMPT_COMMANDS				 #
 ##################################################
 
@@ -743,6 +760,7 @@ PS1='\[\033]0;\w\007\]\[\e[35;1m\]\u\[\e[0m\]\[\e[32m\]@\h\[\e[34m\]\w \[\e[33m\
 
 
 ###### Saves terminal commands in history file in real time (for use with 'shopt -s histappend')
+if [ ! -f $HOME/.bash_history ];then touch $HOME/.bash_history;fi	# ensure bash history file always there
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"	# use with 'shopt -s histappend';save terminal commands in history file in real time
 
 
@@ -1180,7 +1198,8 @@ complete -W "$(echo `cat ~/.bash_history | egrep '^ssh ' | sort | uniq | sed 's/
 ##################################################
 
 ###### Brute force way to block all LSO cookies on Linux system with non-free Flash browser plugin
-for A in ~/.adobe ~/.macromedia ; do ( [ -d $A ] && rm -rf $A ; ln -s -f /dev/null $A ) ; done
+# for A in ~/.adobe ~/.macromedia ; do ( [ -d $A ] && rm -rf $A ; ln -s -f /dev/null $A ) ; done
+for A in ~/.macromedia ; do ( [ -d $A ] && rm -rf $A ; ln -s -f /dev/null $A ) ; done
 
 
 
@@ -1189,22 +1208,22 @@ for A in ~/.adobe ~/.macromedia ; do ( [ -d $A ] && rm -rf $A ; ln -s -f /dev/nu
 ##################################################
 
 ###### greeting
- # from Jonathan's .bashrc file (by ~71KR117)
- # get current hour (24 clock format i.e. 0-23)
- hour=$(date +"%H")
- # if it is midnight to midafternoon will say G'morning
- if [ $hour -ge 0 -a $hour -lt 12 ]
- then
-   greet="Good Morning, $USER. Welcome back."
- # if it is midafternoon to evening ( before 6 pm) will say G'noon
- elif [ $hour -ge 12 -a $hour -lt 18 ]
- then
-   greet="Good Afternoon, $USER. Welcome back."
- else # it is good evening till midnight
-   greet="Good Evening, $USER. Welcome back."
- fi
- # display greeting
- echo $greet
+# # from Jonathan's .bashrc file (by ~71KR117)
+# # get current hour (24 clock format i.e. 0-23)
+# hour=$(date +"%H")
+# # if it is midnight to midafternoon will say G'morning
+# if [ $hour -ge 0 -a $hour -lt 12 ]
+# then
+#   greet="Good Morning, $USER. Welcome back."
+# # if it is midafternoon to evening ( before 6 pm) will say G'noon
+# elif [ $hour -ge 12 -a $hour -lt 18 ]
+# then
+#   greet="Good Afternoon, $USER. Welcome back."
+# else # it is good evening till midnight
+#   greet="Good Evening, $USER. Welcome back."
+# fi
+# # display greeting
+# echo $greet
 
 
 
@@ -6796,86 +6815,86 @@ done
 
 
 ###### Random wallpaper (add whatever wallpaper directory(s) you wish after 'BACKGROUND_DIRS')
+# function randomwp()
+# # for GNOME2
+# {
+# cat > "/tmp/randomwp.py" <<"End-of-message"
+# #!/usr/bin/env python
+# BACKGROUND_DIRS = ['/usr/share/backgrounds', '~/Pictures/Backgrounds']
+# EXTENSIONS = ['jpeg', 'jpg', 'bmp', 'png', 'svg']
+# import os, glob, random, itertools, gconf
+# files = list(itertools.chain(*[[os.path.join(dirpath, name)
+#                                 for name in filenames]
+#                                for dirpath, dirnames, filenames in
+#                                itertools.chain(*[os.walk(os.path.expanduser(d))
+#                                                  for d in BACKGROUND_DIRS])]))
+# gconf.client_get_default().set_string(
+#     '/desktop/gnome/background/picture_filename',
+#     random.choice(files))
+# End-of-message
+# chmod +x "/tmp/randomwp.py"
+# "/tmp/randomwp.py"
+# /bin/rm "/tmp/randomwp.py"
+# }
+
+
+
 function randomwp()
-# for GNOME2
+# for GNOME3
 {
-cat > "/tmp/randomwp.py" <<"End-of-message"
-#!/usr/bin/env python
-BACKGROUND_DIRS = ['/usr/share/backgrounds', '~/Pictures/Backgrounds']
-EXTENSIONS = ['jpeg', 'jpg', 'bmp', 'png', 'svg']
-import os, glob, random, itertools, gconf
-files = list(itertools.chain(*[[os.path.join(dirpath, name)
-                                for name in filenames]
-                               for dirpath, dirnames, filenames in
-                               itertools.chain(*[os.walk(os.path.expanduser(d))
-                                                 for d in BACKGROUND_DIRS])]))
-gconf.client_get_default().set_string(
-    '/desktop/gnome/background/picture_filename',
-    random.choice(files))
-End-of-message
-chmod +x "/tmp/randomwp.py"
-"/tmp/randomwp.py"
-/bin/rm "/tmp/randomwp.py"
+##################################################
+# Random-Gnome3-Wallpaper.sh 			 #
+# Creator:          	Inameiname		 #
+# Major Contributor:    hwttdz 		   	 #
+#			(did most of work :P)	 #
+# Version:           	1.1			 #
+# Last modified:       	18 October 2011	   	 #
+# License:          	GPLv3+			 #
+# Descripton:					 #
+# Script to randomly set desktop/gdm background  #
+# from files in a directory(s) in GNOME3	 #
+# Requires: sudo-apt get install randomize-lines #
+##################################################
+###### just add/remove as many directories as wish
+find "/usr/share/backgrounds" "$HOME/Pictures/Backgrounds" -type f \( -name "*.bmp" -or -name "*.BMP" -or -name "*.jpeg" -or -name "*.JPEG" -or -name "*.jpg" -or -name "*.JPG" -or -name "*.png" -or -name "*.PNG" -or -name "*.svg" -or -name "*.SVG" \)|rl|head -n 1|xargs -I{} bash -c "gsettings set org.gnome.desktop.background picture-uri \"file://{}\""
 }
 
 
 
-# function randomwp()
-# # for GNOME3
-# {
-# ##################################################
-# # Random-Gnome3-Wallpaper.sh 			   #
-# # Creator:          	Inameiname		   #
-# # Major Contributor:    hwttdz 		   #
-# #			(did most of work :P)	   #
-# # Version:           	1.1			   #
-# # Last modified:       	18 October 2011	   #
-# # License:          	GPLv3+			   #
-# # Descripton:					   #
-# # Script to randomly set desktop/gdm background  #
-# # from files in a directory(s) in GNOME3	   #
-# # Requires: sudo-apt get install randomize-lines #
-# ##################################################
-# ###### just add/remove as many directories as wish
-# find "/usr/share/backgrounds" "$HOME/Pictures/Backgrounds" -type f \( -name "*.bmp" -or -name "*.BMP" -or -name "*.jpeg" -or -name "*.JPEG" -or -name "*.jpg" -or -name "*.JPG" -or -name "*.png" -or -name "*.PNG" -or -name "*.svg" -or -name "*.SVG" \)|rl|head -n 1|xargs -I{} bash -c "gsettings set org.gnome.desktop.background picture-uri \"file://{}\""
-# }
-
-
-
-# function randomwp_()
-# {
-# ##################################################
-# # Random-Gnome3-Wallpaper-2.sh 		   #
-# # Creator:          	Inameiname		   #
-# # Version:           	1.0			   #
-# # Last modified:       	18 October 2011    #
-# # License:          	GPLv3+			   #
-# # Descripton:					   #
-# # Script to randomly set desktop/gdm background  #
-# # from files in a directory(s) in GNOME3	   #
-# ##################################################
-# ###### Directories Containing Pictures (to add more folders here, just "/path/to/your/folder")
-# arr[0]="/usr/share/backgrounds"
-# arr[1]="$HOME/Pictures/Backgrounds"
-# # arr[2]=
-# # arr[3]=
-# # arr[4]=
-# # arr[5]=
-# # arr[6]=
-# # arr[7]=
-# # arr[8]=
-# # arr[9]=
-# # arr[10]=
-# ###### How many picture folders are there? (currently = 2)
-# rand=$[ $RANDOM % 2 ]
-# ###### Command to select a random folder
-# DIR=`echo ${arr[$rand]}`
-# ###### Command to select a random file from directory
-# # The *.* should select only files (ideally, pictures, if that's all that's inside)
-# PIC=$(ls $DIR/*.* | shuf -n1)
-# ###### Command to set background Image
-# gsettings set org.gnome.desktop.background picture-uri "file://$PIC"
-# }
+function randomwp_()
+{
+##################################################
+# Random-Gnome3-Wallpaper-2.sh 		  	 #
+# Creator:          	Inameiname		 #
+# Version:           	1.0			 #
+# Last modified:       	18 October 2011    	 #
+# License:          	GPLv3+			 #
+# Descripton:					 #
+# Script to randomly set desktop/gdm background  #
+# from files in a directory(s) in GNOME3	 #
+##################################################
+###### Directories Containing Pictures (to add more folders here, just "/path/to/your/folder")
+arr[0]="/usr/share/backgrounds"
+arr[1]="$HOME/Pictures/Backgrounds"
+# arr[2]=
+# arr[3]=
+# arr[4]=
+# arr[5]=
+# arr[6]=
+# arr[7]=
+# arr[8]=
+# arr[9]=
+# arr[10]=
+###### How many picture folders are there? (currently = 2)
+rand=$[ $RANDOM % 2 ]
+###### Command to select a random folder
+DIR=`echo ${arr[$rand]}`
+###### Command to select a random file from directory
+# The *.* should select only files (ideally, pictures, if that's all that's inside)
+PIC=$(ls $DIR/*.* | shuf -n1)
+###### Command to set background Image
+gsettings set org.gnome.desktop.background picture-uri "file://$PIC"
+}
 
 
 
@@ -7334,7 +7353,7 @@ function color-picker()
 {
 # for GNOME2 only
 # sudo apt-get install python-gtkmozembed xulrunner-2.0
-# also requires: "~/.gnome2/nautilus-scripts/.colorchart/view.html"
+# also requires: "~/.gnome2/nemo-scripts/.colorchart/view.html"
 echo "When you are finished, press "Control C" to continue..."
 cat > "/tmp/color-picker.py" <<"End-of-message"
 #!/usr/bin/python
@@ -7348,7 +7367,7 @@ try:
     from win32com.shell import shellcon, shell
     homedir = shell.SHGetFolderPath(0, shellcon.CSIDL_APPDATA, 0, 0)
 except ImportError:
-    homedir = os.path.expanduser("~/.gnome2/nautilus-scripts/.colorchart/view.html")
+    homedir = os.path.expanduser("~/.gnome2/nemo-scripts/.colorchart/view.html")
 class ColorChart:
 	def __init__(self):
                 self.moz = gtkmozembed.MozEmbed()
@@ -7381,7 +7400,7 @@ chmod +x "/tmp/color-picker-.py"
 # {
 # # for GNOME3 only
 # # sudo apt-get install python-webkit
-# # also requires: "~/.gnome2/nautilus-scripts/.colorchart/view.html"
+# # also requires: "~/.gnome2/nemo-scripts/.colorchart/view.html"
 # echo "When you are finished, press "Control C" to continue..."
 # cat > "/tmp/color-picker.py" <<"End-of-message"
 # #!/usr/bin/python
@@ -7395,7 +7414,7 @@ chmod +x "/tmp/color-picker-.py"
 #     from win32com.shell import shellcon, shell
 #     homedir = shell.SHGetFolderPath(0, shellcon.CSIDL_APPDATA, 0, 0)
 # except ImportError:
-#     homedir = os.path.expanduser("~/.gnome2/nautilus-scripts/.colorchart/view.html")
+#     homedir = os.path.expanduser("~/.gnome2/nemo-scripts/.colorchart/view.html")
 # class ColorChart:
 # 	def __init__(self):
 #                 self.moz = webkit.WebView()
@@ -8685,7 +8704,7 @@ function debextract()
 # dh_make -n -s -e $YOUR_EMAILADDRESS
 # cd debian
 # searchnreplace_ ""$USER" <"$YOUR_EMAILADDRESS">" ""YOUR_PPA_USERNAME" <"$YOUR_EMAILADDRESS">" *
-# searchnreplace_ "unstable; urgency=low" "natty; urgency=low" *
+# searchnreplace_ "unstable; urgency=low" "saucy; urgency=low" *
 # echo '#!/usr/bin/make -f' >> $PACKAGE_NAME.install
 # echo ''
 # echo '# add more lines like below when necessary' >> $PACKAGE_NAME.install
@@ -10124,14 +10143,38 @@ l=12765843;curl -s http://weather.yahooapis.com/forecastrss?w=$l|grep astronomy|
 
 
 
+###### weather-util
+# requires "weather-util" and "weather-util-data"
+# sudo apt-get install weather-util weather-util-data
+# usage = weather 'zip'/'location'/'code'
+# weather search without extended forecast
+alias weather='weather-util'
+
+
+
+# weather search with extended forecast
+alias weatherf='weather-util --forecast'
+
+
+
 ###### weather by US zip code - Can be called two
 # ways	# weather 50315	# weather "Des
 # Moines"
-function weather()
+function weather_()
 {
 declare -a WEATHERARRAY
 WEATHERARRAY=( `lynx -dump http://google.com/search?q=weather+$1 | grep -A 5 '^ *Weather for' | grep -v 'Add to'`)
 echo ${WEATHERARRAY[@]}
+}
+
+
+
+###### weather search with function "forecast"
+function zipweather()
+{
+search=$1
+weather-util $search
+forecast $search
 }
 
 
@@ -12630,8 +12673,19 @@ alias mtube_='mplayer -fs $(echo "http://youtube.com/get_video.php?$(curl -s "$1
 
 
 
+###### mps-youtube
+# requires "python-pip" and mps-youtube
+# sudo apt-get install python-pip
+# sudo pip install mps-youtube
+# sudo pip install mps-youtube --upgrade
+alias youtube='mpsyt'
+
+
+
 ###### Youtube-dl
-alias yt='youtube-dl -t '
+# requires "youtube-dl"
+# sudo apt-get install youtube-dl
+alias yt='youtube-dl -t'
 
 
 
@@ -13365,7 +13419,7 @@ function remastersys-copy()
 	mkdir "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y`"
 	cd "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y`"
 	echo 'Password:		password' >> Password.txt
-	cp /home/remastersys/remastersys/custombackup.iso "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y`"
+	cp /home/remastersys/remastersys/custom-backup.iso "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y`"
 	cd ..
 	cd ..
 	notify-send -t 3000 -i /usr/share/icons/gnome/32x32/status/info.png "Remastersys ISO Copy Finished"
@@ -13373,7 +13427,7 @@ function remastersys-copy()
 	mkdir "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y_%H%M`"
 	cd "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y_%H%M`"
 	echo 'Password:		password' >> Password.txt
-	cp /home/remastersys/remastersys/custombackup.iso "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y_%H%M`"
+	cp /home/remastersys/remastersys/custom-backup.iso "$HOME/Backups/$DISTRIB_ID $DISTRIB_CODENAME Backup `date +-%e-%m-%Y_%H%M`"
 	cd ..
 	cd ..
 	notify-send -t 3000 -i /usr/share/icons/gnome/32x32/status/info.png "Remastersys ISO Copy Finished"
@@ -13466,12 +13520,16 @@ cat > "/tmp/repository-update-check.sh" <<"End-of-message"
 	done
 #Lists release, repos
 	myrelease=$(grep 'DISTRIB_CODENAME' /etc/lsb-release | sed 's/DISTRIB_CODENAME=//' | head -1)
-	#myrelease="oneiric"
+	#myrelease="saucy"
 	repo_clean=$(ls /etc/apt/sources.list.d/ | grep -v .save)
 	repo_list=$(cd /etc/apt/sources.list.d && cat $repo_clean /etc/apt/sources.list | grep deb\ http.* | sed -e 's/.*help\.ubuntu\.com.*//' -e 's/^#.*//' -e 's/deb\ //' -e 's/deb-src\ //' -e '/^$/d' | sort -u | awk '{print $1"|"$2}' | sed -e 's/\/|/|/' -e 's/-[a-z]*$//' | uniq && cd)
 	#repo_list=$(cat dummy.sources.list | grep deb\ http.* | sed -e 's/.*help\.ubuntu\.com.*//' -e 's/^#.*//' -e 's/deb\ //' -e 's/deb-src\ //' -e '/^$/d' | sort -u | awk '{print $1"|"$2}' | sed -e 's/\/|/|/' -e 's/-[a-z]*$//' | uniq && cd)
 	count_repos=$(echo $repo_list | wc -w)
 	check_progress=$count_repos
+	release_14="trusty"
+	release_13="saucy"
+	release_12="raring"
+	release_11="quantal"
 	release_10="precise"
 	release_9="oneiric"
 	release_8="natty"
@@ -13502,6 +13560,30 @@ cat > "/tmp/repository-update-check.sh" <<"End-of-message"
 		then
 			echo "$myrelease " >> /tmp/repositories
 		fi
+	        if [ $(echo "$rir_list" | grep -oi $release_14) ]
+	        then
+	                r14="yes"
+	                else
+	                r14="no"
+	        fi
+	        if [ $(echo "$rir_list" | grep -oi $release_13) ]
+	        then
+	                r13="yes"
+	                else
+	                r13="no"
+	        fi
+	        if [ $(echo "$rir_list" | grep -oi $release_12) ]
+	        then
+	                r12="yes"
+	                else
+	                r12="no"
+	        fi
+	        if [ $(echo "$rir_list" | grep -oi $release_11) ]
+	        then
+	                r11="yes"
+	                else
+	                r11="no"
+	        fi
 	        if [ $(echo "$rir_list" | grep -oi $release_10) ]
 	        then
 	                r10="yes"
@@ -13563,39 +13645,51 @@ cat > "/tmp/repository-update-check.sh" <<"End-of-message"
 	                r1="no"
 	        fi
 		#results
-		if [ "$rir" = "$release_10" ]
+		if [ "$rir" = "$release_14" ]
 		then
-			results="$repo [$r10] $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
+			results="$repo [$r14] $r13 $r12 $r11 $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
+		elif [ "$rir" = "$release_13" ]
+		then
+			results="$repo $r14 [$r13] $r12 $r11 $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
+		elif [ "$rir" = "$release_12" ]
+		then
+			results="$repo $r14 $r13 [$r12] $r11 $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
+		elif [ "$rir" = "$release_11" ]
+		then
+			results="$repo $r14 $r13 $r12 [$r11] $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
+		elif [ "$rir" = "$release_10" ]
+		then
+			results="$repo $r14 $r13 $r12 $r11 [$r10] $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
 		elif [ "$rir" = "$release_9" ]
 		then
-			results="$repo $r10 [$r9] $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 [$r9] $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1"
 		elif [ "$rir" = "$release_8" ]
 		then
-			results="$repo $r10 $r9 [$r8] $r7 $r6 $r5 $r4 $r3 $r2 $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 [$r8] $r7 $r6 $r5 $r4 $r3 $r2 $r1"
 		elif [ "$rir" = "$release_7" ]
 		then
-			results="$repo $r10 $r9 $r8 [$r7] $r6 $r5 $r4 $r3 $r2 $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 [$r7] $r6 $r5 $r4 $r3 $r2 $r1"
 		elif [ "$rir" = "$release_6" ]
 		then
-			results="$repo $r10 $r9 $r8 $r7 [$r6] $r5 $r4 $r3 $r2 $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 $r7 [$r6] $r5 $r4 $r3 $r2 $r1"
 		elif [ "$rir" = "$release_5" ]
 		then
-			results="$repo $r10 $r9 $r8 $r7 $r6 [$r5] $r4 $r3 $r2 $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 $r7 $r6 [$r5] $r4 $r3 $r2 $r1"
 		elif [ "$rir" = "$release_4" ]
 		then
-			results="$repo $r10 $r9 $r8 $r7 $r6 $r5 [$r4] $r3 $r2 $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 $r7 $r6 $r5 [$r4] $r3 $r2 $r1"
 		elif [ "$rir" = "$release_3" ]
 		then
-			results="$repo $r10 $r9 $r8 $r7 $r6 $r5 $r4 [$r3] $r2 $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 $r7 $r6 $r5 $r4 [$r3] $r2 $r1"
 		elif [ "$rir" = "$release_2" ]
 		then
-			results="$repo $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 [$r2] $r1"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 [$r2] $r1"
 		elif [ "$rir" = "$release_1" ]
 		then
-			results="$repo $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 [$r1]"
+			results="$repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 [$r1]"
 		else
 			echo "$myrelease " >> /tmp/repositories
-			results="$repo [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes]"
+			results="$repo [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes] [yes]"
 
 		fi
 		#finds status and stores results
@@ -13607,15 +13701,15 @@ cat > "/tmp/repository-update-check.sh" <<"End-of-message"
 		then
 	                status="Ok"
 		fi
-#		if [ $(echo "$results" | grep -o "\[yes\]" | uniq) ] && [ "$rir" \< "$myrelease" ] && [ -n $(echo "$results" | grep -o "\[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]" | uniq) ] && [ echo "rir_list" | $(awk '{print $10 $9 $8 $7 $6 $5 $4 $3 $2 $1}' | grep $myrelease) ]
+#		if [ $(echo "$results" | grep -o "\[yes\]" | uniq) ] && [ "$rir" \< "$myrelease" ] && [ -n $(echo "$results" | grep -o "\[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]" | uniq) ] && [ echo "rir_list" | $(awk '{print $14 $13 $12 $11 $10 $9 $8 $7 $6 $5 $4 $3 $2 $1}' | grep $myrelease) ]
 #		then
 #			status="Upgradeable"
 #		fi
-#		if [ $(echo "$results" | grep -o "\[yes\]" | uniq) ] && [ "$rir" \> "$myrelease" ] && [ -n $(echo "$results" | grep -o "\[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]" | uniq) ] && [ echo "rir_list" | $(awk '{print $10 $9 $8 $7 $6 $5 $4 $3 $2 $1}' | grep $myrelease) ]
+#		if [ $(echo "$results" | grep -o "\[yes\]" | uniq) ] && [ "$rir" \> "$myrelease" ] && [ -n $(echo "$results" | grep -o "\[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]\ \[yes\]" | uniq) ] && [ echo "rir_list" | $(awk '{print $14 $13 $12 $11 $10 $9 $8 $7 $6 $5 $4 $3 $2 $1}' | grep $myrelease) ]
 #		then
 #			status="Downgradeable"
 #	        fi
-		#TODO should be $status $repo $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1
+		#TODO should be $status $repo $r14 $r13 $r12 $r11 $r10 $r9 $r8 $r7 $r6 $r5 $r4 $r3 $r2 $r1
 		echo "$status $results" >> /tmp/repositories
 		#Zenity progressbar
         	percent=$((100-$check_progress*100/$count_repos))
@@ -13639,7 +13733,7 @@ cat > "/tmp/repository-update-check.sh" <<"End-of-message"
 	else
 		window_height="$((100+$count_repos*22))"
 	fi
-	zenity --title "Repositories" --text "$zeni_text" --width 800 --height $window_height --list --column "Status" --column "Repository" --column "$release_10" --column "$release_9" --column "$release_8" --column "$release_7" --column "$release_6" --column "$release_5" --column "$release_4" --column "$release_3" --column "$release_2" --column "$release_1" $(cat /tmp/repositories | sed s/$myrelease//)
+	zenity --title "Repositories" --text "$zeni_text" --width 800 --height $window_height --list --column "Status" --column "Repository" --column "$release_14" --column "$release_13" --column "$release_12" --column "$release_11" --column "$release_10" --column "$release_9" --column "$release_8" --column "$release_7" --column "$release_6" --column "$release_5" --column "$release_4" --column "$release_3" --column "$release_2" --column "$release_1" $(cat /tmp/repositories | sed s/$myrelease//)
 End-of-message
 chmod +x "/tmp/repository-update-check.sh"
 "/tmp/repository-update-check.sh"
@@ -15048,19 +15142,60 @@ firefox "http://www.tv.com/search.php?type=11&stype=all&tag=search%3Bfrontdoor&q
 # watch video from computer through S-Video out) #
 ##################################################
 
+###### use the command: "xrandr" to discover what
+# the proper connected video outputs there are attached
+# such as VGA-0 (monitor), LVDS1 (Laptop screen), S-video, VGA1
+# (VGA-to-TV Converter Box), etc.
 function tv-monitor-switch-end() {
-xrandr --output VGA-0 --mode 1024x768 --output S-video --mode 800x600 --same-as VGA-0
-xvattr -a XV_CRTC -v 0
-xrandr --output S-video --off
+mode="$(xrandr -q|grep -A1 "LVDS1 connected"| tail -1 |awk '{ print $1 }')"
+if [ -n "$mode" ]; then
+  mode1="$(xrandr -q|grep -A1 "VGA1 connected"| tail -1 |awk '{ print $1 }')"
+  if [ -n "$mode1" ]; then
+    xrandr --output LVDS1 --mode 1280x800 --output VGA1 --off
+  else
+    echo "No VGA1 monitor is connected so nothing to do."
+  fi
+else
+  mode2="$(xrandr -q|grep -A1 "VGA-0 connected"| tail -1 |awk '{ print $1 }')"
+  if [ -n "$mode2" ]; then
+    mode3="$(xrandr -q|grep -A1 "S-video connected"| tail -1 |awk '{ print $1 }')"
+    if [ -n "$mode3" ]; then
+      xrandr --output VGA-0 --mode 1024x768 --output S-video --off
+    else
+      echo "No S-video monitor is connected so nothing to do."
+    fi
+  else
+    echo "No other monitor is connected so nothing to do."
+  fi
+fi
 }
 
 
 
 function tv-monitor-switch-start() {
-xrandr --addmode S-video 800x600
-xrandr --output S-video --mode 800x600
-xvattr -a XV_CRTC -v 1
-xrandr --output VGA-0 --mode 800x600 --output S-video --mode 800x600 --same-as VGA-0
+mode="$(xrandr -q|grep -A1 "LVDS1 connected"| tail -1 |awk '{ print $1 }')"
+if [ -n "$mode" ]; then
+  mode1="$(xrandr -q|grep -A1 "VGA1 connected"| tail -1 |awk '{ print $1 }')"
+  if [ -n "$mode1" ]; then
+    xrandr --addmode VGA1 1024x768
+    xrandr --output LVDS1 --mode 1024x768 --output VGA1 --mode 1024x768 --same-as LVDS1
+  else
+    echo "No VGA1 monitor is connected so nothing to do."
+  fi
+else
+  mode2="$(xrandr -q|grep -A1 "VGA-0 connected"| tail -1 |awk '{ print $1 }')"
+  if [ -n "$mode2" ]; then
+    mode3="$(xrandr -q|grep -A1 "S-video connected"| tail -1 |awk '{ print $1 }')"
+    if [ -n "$mode3" ]; then
+      xrandr --addmode S-video 800x600
+      xrandr --output VGA-0 --mode 800x600 --output S-video --mode 800x600 --same-as VGA-0
+    else
+      echo "No S-video monitor is connected so nothing to do."
+    fi
+  else
+    echo "No other monitor is connected so nothing to do."
+  fi
+fi
 }
 
 
@@ -15816,6 +15951,7 @@ alias chown-images='sudo chown -R $USER:$USER ~/Images'
 alias chown-localhost='sudo chown -R $USER:$USER ~/var/www'
 alias chown-music='sudo chown -R $USER:$USER ~/Music'
 alias chown-nautilus-scripts='sudo chown -R $USER:$USER ~/.gnome2/nautilus-scripts'
+alias chown-nemo-scripts='sudo chown -R $USER:$USER ~/.gnome2/nemo-scripts'
 alias chown-packages='sudo chown -R $USER:$USER ~/Packages'
 alias chown-pictures='sudo chown -R $USER:$USER ~/Pictures'
 alias chown-ppc='sudo chown -R $USER:$USER ~/PPC'
@@ -15979,10 +16115,10 @@ alias yuoart='yaourt'
 # Computer cleanup				 #
 ##################################################
 
-alias adobecleanup='sudo rm -fr ~/.adobe/* && sudo rm -fr ~/.macromedia/* && sudo rm -fr /root/.adobe/* && sudo rm -fr /root/.macromedia/*'
+alias adobecleanup='sudo rm -fr ~/.adobe && sudo rm -fr ~/.macromedia && sudo rm -fr /root/.adobe && sudo rm -fr /root/.macromedia'
 alias bleachbitcleanup='sudo bleachbit --clean --preset'
 alias cachecleanup='sudo rm -fr /root/.cache/* && sudo rm -fr ~/.cache/*'				# cleanup cache
-alias cleanup="sudo apt-get -y autoclean && sudo apt-get -y autoremove && sudo apt-get -y clean && sudo apt-get -y remove && sudo aptitude -y purge `dpkg --get-selections | grep deinstall | awk '{print $1}'` && sudo deborphan | xargs sudo apt-get -y remove --purge && sudo bleachbit --clean --preset && sudo rm -rf ~/.adobe/* ~/.amsn/*/*/cache/ ~/.amsn/*/logs/ ~/.amsn/*/voiceclips/ ~/.amsn/*/webcam/ ~/.aMule/logfile ~/.aMule/logfile.bak ~/.aMule/Temp/ ~/.azureus/active/*.bak ~/.azureus/ipfilter.cache ~/.azureus/*.log ~/.azureus/logs/ ~/.azureus/tmp/ ~/.bash_history ~/.beagle/Indexes/ ~/.beagle/Log/ ~/.beagle/TextCache/ ~/.cache/* ~/.cache/audacious/thumbs/ ~/.cache/chromium/ ~/.cache/google-chrome/ ~/.cache/vlc/ ~/.compiz/session/ ~/.config/audacious/log ~/.config/audacious/playlist.xspf ~/.config/chromium/Default/Bookmarks.bak ~/.config/chromium/Default/Cookies ~/.config/chromium/Default/Current\ Session ~/.config/chromium/Default/Current\ Tabs ~/.config/chromium/Default/databases/Databases.db ~/.config/chromium/Default/databases/http*/ ~/.config/chromium/Default/Extension\ Cookies ~/.config/chromium/Default/Favicons/ ~/.config/chromium/Default/*History* ~/.config/chromium/Default/*History*/ ~/.config/chromium/Default/*-journal ~/.config/chromium/Default/Last\ Session ~/.config/chromium/Default/Last\ Tabs ~/.config/chromium/Default/Local\ Storage/*localstorage ~/.config/chromium/Default/Thumbnails* ~/.config/chromium/Default/Top\ Sites ~/.config/chromium/Default/Visited\ Links ~/.config/chromium/Default/Web\ Data/chrome.autofill ~/.config/chromium/Default/Web\ Data/chrome.keywords ~/.config/chromium/Local\ State/HostReferralList.json ~/.config/chromium/Local\ State/StartupDNSPrefetchList.json ~/.config/compiz/ ~/.config/emesene*/*/cache/ ~/.config/emesene*/*/log* ~/.config/emesene*/*/logs/ ~/.config/google-chrome/Default/Cookies ~/.config/google-chrome/Default/Current\ Session ~/.config/google-chrome/Default/Current\ Tabs ~/.config/google-chrome/Default/databases/Databases.db ~/.config/google-chrome/Default/databases/http*/ ~/.config/google-chrome/Default/Extension\ Cookies ~/.config/google-chrome/Default/Favicons/ ~/.config/google-chrome/Default/*History* ~/.config/google-chrome/Default/History/ ~/.config/google-chrome/Default/Last\ Session ~/.config/google-chrome/Default/Last\ Tabs ~/.config/google-chrome/Default/Local\ Storage/http*localstorage ~/.config/google-chrome/Default/Preferences/dns_prefetching.json ~/.config/google-chrome/Default/Thumbnails* ~/.config/google-chrome/Default/Top\ Sites ~/.config/google-chrome/Default/Visited\ Links ~/.config/google-chrome/Default/Web\ Data/chrome.autofill ~/.config/google-chrome/Default/Web\ Data/chrome.keywords ~/.config/google-chrome/Local\ State/HostReferralList.json ~/.config/google-chrome/Local\ State/StartupDNSPrefetchList.json ~/.config/gpodder/cache/ ~/.config/real/rpcookies.txt ~/.config/Screenlets/*.log ~/.config/transmission/blocklists/ ~/.config/transmission/resume/ ~/.easytag/easytag.log ~/.elinks/cookies ~/.elinks/*hist ~/.evolution/cache/ ~/.exaile/cache/ ~/.exaile/covers/ ~/.exaile/exaile.log ~/.exaile/podcasts/ ~/.filezilla/recentservers.xml ~/.gconf/apps/gnome-settings/gnome-panel/%gconf.xml ~/.gconf/apps/gnome-settings/gnome-search-tool/%gconf.xml ~/.gftp/cache/ ~/.gftp/gftp.log ~/.gimp-*/tmp/ ~/.gl-117/logfile.txt ~/.gnome2/epiphany/ephy-favicon-cache.xml ~/.gnome2/epiphany/ephy-history.xml ~/.gnome2/epiphany/favicon_cache/ ~/.gnome2/epiphany/mozilla/epiphany/Cache/ ~/.gnome2/epiphany/mozilla/epiphany/cookies* ~/.gnome2/gedit-metadata.xml ~/.gnome2/rhythmbox/jamendo/ ~/.gnome2/rhythmbox/magnatune/ ~/.googleearth/Cache/dbCache.* ~/.googleearth/Temp/ ~/.hippo_opensim_viewer/cache/ ~/.hippo_opensim_viewer/logs/ ~/.icedteaplugin/cache/ ~/.java/deployment/cache/ ~/.kde/cache-*/ ~/.kde/cache-*/ ~/.kde*/share/apps/gwenview/recent*/*rc ~/.kde/share/apps/kcookiejar/cookies ~/.kde/share/apps/kcookiejar/cookies ~/.kde/share/apps/konqueror/autosave/ ~/.kde/share/apps/konqueror/closeditems_saved ~/.kde/share/apps/konqueror/konq_history ~/.kde*/share/apps/RecentDocuments/*.desktop ~/.kde/share/config/konq_history ~/.kde/tmp-*/ ~/.kde/tmp-localhost.localdomain/ ~/.libreoffice/*/*/*/cache/ ~/.libreoffice/*/*/registry/data/org/openoffice/Office/Common.xcu ~/.liferea_*/cache/ ~/.liferea_*/mozilla/liferea/Cache/ ~/.liferea_*/mozilla/liferea/cookies.sqlite ~/.links2/links.his ~/.local/share/gvfs-metadata/*.log ~/.local/share/gvfs-metadata/uuid* ~/.local/share/Trash/* ~/.luckyBackup/logs/ ~/.luckyBackup/snaps/ ~/.macromedia/* ~/.mc/filepos ~/.mc/history ~/.miro/icon-cache/ ~/.miro/miro-*log* ~/.miro/mozilla/Cache/ ~/.mozilla/default/Cache/ ~/.mozilla/extensions ~/.mozilla/firefox/Crash\ Reports/ ~/.mozilla/firefox/*.default/adblockplus/patterns-backup* ~/.mozilla/firefox/*.default/bookmarkbackups/ ~/.mozilla/firefox/*.default/Cache/ ~/.mozilla/firefox/*.default/cookies.* ~/.mozilla/firefox/*.default/downloads.sqlite ~/.mozilla/firefox/*.default/formhistory.sqlite ~/.mozilla/firefox/*.default/history.dat ~/.mozilla/firefox/*.default/minidumps/ ~/.mozilla/firefox/*.default/OfflineCache/ ~/.mozilla/firefox/*.default/reminderfox/*.bak* ~/.mozilla/firefox/*.default/sessionstore.* ~/.mozilla/firefox/*.default/startupCache/ ~/.mozilla/firefox/*.default/webappsstore.sqlite ~/.mozilla/seamonkey/*/Cache/ ~/.mozilla/seamonkey/*.default/cookies.sqlite ~/.mozilla/seamonkey/*.default/downloads.sqlite ~/.mozilla/seamonkey/*.default/urlbarhistory.sqlite ~/.mozilla/*/*.slt/chatzilla/logs/*log ~/.mozilla/*/*.slt/cookies.txt ~/.mozilla/*/*.slt/history.dat ~/.mozilla-thunderbird/*.default/signons.txt ~/.nautilus/metafiles/*/*.xml ~/.nautilus/saved-session-?????? ~/.nexuiz/data/dlcache/ ~/.ntrc_*/cookies.txt ~/.ntrc_*/history* ~/.openoffice.org/*/*/*/cache/ ~/.openoffice.org/*/*/registry/data/org/openoffice/Office/Common.xcu ~/.opera/*cache*/ ~/.opera/cookies4.dat ~/.opera/download.dat ~/.opera/global.dat ~/.opera/*history* ~/.opera/icons/ ~/.opera/pstorage/ ~/.opera/sessions/ ~/.opera/temporary_downloads/ ~/.opera/thumbnails/ ~/.opera/vlink4.dat ~/.opera/vps/????/md.dat ~/.purple/icons/ ~/.purple/logs/ ~/.recently-used.xbel ~/.recoll/xapiandb/ /root/.adobe/* /root/.cache/* /root/.local/share/Trash/* /root/.macromedia/* /root/.thumbnails/* /root/.Trash ~/.secondlife/cache/ ~/.secondlife/logs/ ~/.Skype/*/chatmsg[0-9]*.dbb ~/.Skype/*/chatsync/*/*.dat ~/.sw35/swiftweasel/*/Cache/ ~/.thumbnails/* ~/.thunderbird/*.default/Cache/ ~/.thunderbird/*.default/cookies.sqlite ~/.thunderbird/*.default/signons.sqlite ~/.thunderbird/*.default/signons.txt ~/.thunderbird/default/*.slt/Cache/ ~/.thunderbird/default/*.slt/cookies.sqlite ~/.thunderbird/default/*.slt/signons3.txt ~/.thunderbird/default/*.slt/signons.sqlite ~/.thunderbird/default/*.slt/signons.txt ~/.thunderbird/Profiles/*.default/Cache/ ~/.thunderbird/Profiles/*.default/cookies.sqlite ~/.thunderbird/Profiles/*.default/signons.sqlite ~/.Trash ~/.tremulous/servercache.dat /var/backups/ /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/tmp/ ~/.viminfo ~/.wine/drive_c/winetrickstmp/ ~/.winetrickscache/ ~/.winetrickscache/ ~/.xchat2/logs/*log ~/.xchat2/scrollback/ ~/.xchat2/xchatlogs/*log ~/.xine/catalog.cache ~/.xsession-errors ~/.xsession-errors.old"
+alias cleanup="sudo apt-get -y autoclean && sudo apt-get -y autoremove && sudo apt-get -y clean && sudo apt-get -y remove && sudo aptitude -y purge `dpkg --get-selections | grep deinstall | awk '{print $1}'` && sudo deborphan | xargs sudo apt-get -y remove --purge && sudo bleachbit --clean --preset && find ~ -type f -name ".DS_Store" -exec rm {} \; && find ~ -type f -name "Thumbs.db" -exec rm {} \; && find ~ -type f -regex ".*~" -exec rm {} \; && sudo rm -rvf ~/.adobe ~/.adobe/Acrobat/*/Cache/ ~/.adobe/Acrobat/*/Preferences/reader_prefs ~/.adobe/Flash_Player/AssetCache/ ~/.amsn/*/*/cache/ ~/.amsn/*/logs/ ~/.amsn/*/voiceclips/ ~/.amsn/*/webcam/ ~/.aMule/logfile ~/.aMule/logfile.bak ~/.aMule/Temp/ ~/.azureus/active/*.bak ~/.azureus/ipfilter.cache ~/.azureus/*.log ~/.azureus/logs/ ~/.azureus/tmp/ ~/.bash_history ~/.beagle/Indexes/ ~/.beagle/Log/ ~/.beagle/TextCache/ ~/.cache/ ~/.cache/* ~/.cache/audacious/thumbs/ ~/.cache/chromium/ ~/.cache/gedit/gedit-metadata.xml ~/.cache/google-chrome/ ~/.cache/vlc/ ~/.compiz/session/ ~/.config/audacious/log ~/.config/audacious/playlist.xspf ~/.config/chromium/Default/Bookmarks.bak ~/.config/chromium/Default/Cookies ~/.config/chromium/Default/Current\ Session ~/.config/chromium/Default/Current\ Tabs ~/.config/chromium/Default/databases/Databases.db ~/.config/chromium/Default/databases/http*/ ~/.config/chromium/Default/Extension\ Cookies ~/.config/chromium/Default/Favicons/ ~/.config/chromium/Default/*History* ~/.config/chromium/Default/*History*/ ~/.config/chromium/Default/*-journal ~/.config/chromium/Default/Last\ Session ~/.config/chromium/Default/Last\ Tabs ~/.config/chromium/Default/Local\ Storage/*localstorage ~/.config/chromium/Default/Thumbnails* ~/.config/chromium/Default/Top\ Sites ~/.config/chromium/Default/Visited\ Links ~/.config/chromium/Default/Web\ Data/chrome.autofill ~/.config/chromium/Default/Web\ Data/chrome.keywords ~/.config/chromium/Local\ State/HostReferralList.json ~/.config/chromium/Local\ State/StartupDNSPrefetchList.json ~/.config/compiz/ ~/.config/emesene*/*/cache/ ~/.config/emesene*/*/log* ~/.config/emesene*/*/logs/ ~/.config/google-chrome/Default/Cookies ~/.config/google-chrome/Default/Current\ Session ~/.config/google-chrome/Default/Current\ Tabs ~/.config/google-chrome/Default/databases/Databases.db ~/.config/google-chrome/Default/databases/http*/ ~/.config/google-chrome/Default/Extension\ Cookies ~/.config/google-chrome/Default/Favicons/ ~/.config/google-chrome/Default/*History* ~/.config/google-chrome/Default/History/ ~/.config/google-chrome/Default/Last\ Session ~/.config/google-chrome/Default/Last\ Tabs ~/.config/google-chrome/Default/Local\ Storage/http*localstorage ~/.config/google-chrome/Default/Preferences/dns_prefetching.json ~/.config/google-chrome/Default/Thumbnails* ~/.config/google-chrome/Default/Top\ Sites ~/.config/google-chrome/Default/Visited\ Links ~/.config/google-chrome/Default/Web\ Data/chrome.autofill ~/.config/google-chrome/Default/Web\ Data/chrome.keywords ~/.config/google-chrome/Local\ State/HostReferralList.json ~/.config/google-chrome/Local\ State/StartupDNSPrefetchList.json ~/.config/gpodder/cache/ ~/.config/menus/*.menu.undo-* ~/.config/real/rpcookies.txt ~/.config/Screenlets/*.log ~/.config/transmission/blocklists/ ~/.config/transmission/resume/ ~/.easytag/easytag.log ~/.elinks/cookies ~/.elinks/*hist /etc/apt/sources.list.d/* ~/.evolution/cache/ ~/.exaile/cache/ ~/.exaile/covers/ ~/.exaile/exaile.log ~/.exaile/podcasts/ ~/.filezilla/recentservers.xml ~/.gconf/apps/gnome-settings/gnome-panel/%gconf.xml ~/.gconf/apps/gnome-settings/gnome-search-tool/%gconf.xml ~/.gftp/cache/ ~/.gftp/gftp.log ~/.gimp-*/tmp/ ~/.gl-117/logfile.txt ~/.gnome2/epiphany/ephy-favicon-cache.xml ~/.gnome2/epiphany/ephy-history.xml ~/.gnome2/epiphany/favicon_cache/ ~/.gnome2/epiphany/mozilla/epiphany/Cache/ ~/.gnome2/epiphany/mozilla/epiphany/cookies* ~/.gnome2/gedit-metadata.xml ~/.gnome2/rhythmbox/jamendo/ ~/.gnome2/rhythmbox/magnatune/ ~/.googleearth/Cache/dbCache.* ~/.googleearth/Temp/ ~/.goutputstream-* ~/.hippo_opensim_viewer/cache/ ~/.hippo_opensim_viewer/logs/ ~/.icedteaplugin/cache/ ~/.java/deployment/cache/ ~/.kde/cache-*/ ~/.kde*/share/apps/gwenview/recent*/*rc ~/.kde/share/apps/kcookiejar/cookies ~/.kde/share/apps/konqueror/autosave/ ~/.kde/share/apps/konqueror/closeditems_saved ~/.kde/share/apps/konqueror/konq_history ~/.kde*/share/apps/RecentDocuments/*.desktop ~/.kde/share/config/konq_history ~/.kde/tmp-*/ ~/.kde/tmp-localhost.localdomain/ ~/.libreoffice/*/*/*/cache/ ~/.libreoffice/*/*/registry/data/org/openoffice/Office/Common.xcu ~/.liferea_*/cache/ ~/.liferea_*/mozilla/liferea/Cache/ ~/.liferea_*/mozilla/liferea/cookies.sqlite ~/.links2/links.his ~/.local/share/gvfs-metadata/*.log ~/.local/share/gvfs-metadata/uuid* ~/.local/share/Trash/ ~/.local/share/Trash/* ~/.luckyBackup/logs/ ~/.luckyBackup/snaps/ ~/.macromedia ~/.macromedia/Flash_Player/ ~/.mc/filepos ~/.mc/history ~/.miro/icon-cache/ ~/.miro/miro-*log* ~/.miro/mozilla/Cache/ ~/.mozilla/default/Cache/ ~/.mozilla/extensions ~/.mozilla/firefox/Crash\ Reports/ ~/.mozilla/firefox/*.default/adblockplus/patterns-backup* ~/.mozilla/firefox/*.default/bookmarkbackups/ ~/.mozilla/firefox/*.default/Cache/ ~/.mozilla/firefox/*.default/cookies.* ~/.mozilla/firefox/*.default/downloads.sqlite ~/.mozilla/firefox/*.default/formhistory.sqlite ~/.mozilla/firefox/*.default/history.dat ~/.mozilla/firefox/*.default/minidumps/ ~/.mozilla/firefox/*.default/mozilla-media-cache/ ~/.mozilla/firefox/*.default/OfflineCache/ ~/.mozilla/firefox/*.default/reminderfox/*.bak* ~/.mozilla/firefox/*.default/sessionstore.* ~/.mozilla/firefox/*.default/startupCache/ ~/.mozilla/firefox/*.default/webappsstore.sqlite ~/.mozilla/seamonkey/*/Cache/ ~/.mozilla/seamonkey/*.default/cookies.sqlite ~/.mozilla/seamonkey/*.default/downloads.sqlite ~/.mozilla/seamonkey/*.default/urlbarhistory.sqlite ~/.mozilla/*/*.slt/chatzilla/logs/*log ~/.mozilla/*/*.slt/cookies.txt ~/.mozilla/*/*.slt/history.dat ~/.mozilla-thunderbird/*.default/signons.txt ~/.nautilus/metafiles/*/*.xml ~/.nautilus/saved-session-?????? ~/.nexuiz/data/dlcache/ ~/.ntrc_*/cookies.txt ~/.ntrc_*/history* ~/.openoffice.org/*/*/*/cache/ ~/.openoffice.org/*/*/registry/data/org/openoffice/Office/Common.xcu ~/.opera/*cache*/ ~/.opera/cookies4.dat ~/.opera/download.dat ~/.opera/global.dat ~/.opera/*history* ~/.opera/icons/ ~/.opera/pstorage/ ~/.opera/sessions/ ~/.opera/temporary_downloads/ ~/.opera/thumbnails/ ~/.opera/vlink4.dat ~/.opera/vps/????/md.dat ~/.purple/icons/ ~/.purple/logs/ ~/.recently-used.xbel ~/.recoll/xapiandb/ /root/.adobe /root/.cache/* /root/.local/share/Trash/* /root/.macromedia /root/.thumbnails/* /root/.Trash ~/.secondlife/cache/ ~/.secondlife/logs/ ~/.Skype/*/chatmsg[0-9]*.dbb ~/.Skype/*/chatsync/*/*.dat ~/.sw35/swiftweasel/*/Cache/ ~/.synaptic/log/ ~/.thumbnails/ ~/.thumbnails/* ~/.thunderbird/*.default/Cache/ ~/.thunderbird/*.default/cookies.sqlite ~/.thunderbird/*.default/signons.sqlite ~/.thunderbird/*.default/signons.txt ~/.thunderbird/default/*.slt/Cache/ ~/.thunderbird/default/*.slt/cookies.sqlite ~/.thunderbird/default/*.slt/signons3.txt ~/.thunderbird/default/*.slt/signons.sqlite ~/.thunderbird/default/*.slt/signons.txt ~/.thunderbird/Profiles/*.default/Cache/ ~/.thunderbird/Profiles/*.default/cookies.sqlite ~/.thunderbird/Profiles/*.default/signons.sqlite ~/.Trash ~/.tremulous/servercache.dat /var/backups/ /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/tmp/ ~/.viminfo ~/.wine/drive_c/winetrickstmp/ ~/.winetrickscache/ ~/.xbmc/addons/Navi-X/cache/images/* ~/.xbmc/addons/packages/* ~/xbmc*.log ~/.xbmc/userdata/Database/Textures* ~/.xbmc/userdata/Thumbnails/* ~/.xchat2/logs/*log ~/.xchat2/scrollback/ ~/.xchat2/xchatlogs/*log ~/.xine/catalog.cache ~/.xsession-errors ~/.xsession-errors.old"
 alias configpurge="sudo aptitude -y purge `dpkg --get-selections | grep deinstall | awk '{print $1}'`"	# purge configuration files of removed packages on debian systems
 alias kernelcleanup="dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | xargs sudo apt-get -y purge"											# remove all unused Linux Kernel headers, images & modules
 alias orphaned='sudo deborphan | xargs sudo apt-get -y remove --purge'
@@ -16127,6 +16263,7 @@ alias localhost='cd /var/www'
 alias movies='cd ~/Videos'
 alias music='cd ~/Music'
 alias nautilus-scripts='cd ~/.gnome2/nautilus-scripts'
+alias nemo-scripts='cd ~/.gnome2/nemo-scripts'
 alias packages='cd ~/Packages'
 alias packets='cd ~/.packets'
 alias pictures='cd ~/Pictures'
@@ -16247,6 +16384,8 @@ alias verbatim='mount /media/verbatim && cd /media/verbatim'
 # Information					 #
 ##################################################
 
+alias acpi='acpi -V'									# shows all of acpi's info (battery, adapter, thermal, cooling)
+alias battery='acpi -bi'								# find large files in current directory
 alias big='function BIG() { find . -size +${1}M -ls; }; BIG $1'				# find large files in current directory
 alias biggest='BLOCKSIZE=1048576; du -x | sort -nr | head -10'				# show biggest directories
 alias biggest_user="ac -p | sort -nk 2 | awk '/total/{print x};{x=$1}"			# show which user has the most accumulated login time
@@ -16256,6 +16395,7 @@ alias codename='lsb_release -cs | sed "s/^./\u&/"'					# Linux version detail - 
 alias color1='sh ~/.scripts/termcolor1'   						# displays colorset 1
 alias color2='sh ~/.scripts/termcolor2'   						# displays colerset 2
 alias color3='sh ~/.scripts/termcolor3'   						# displays colorset 3
+alias cooling='acpi -c'									# shows cooling for processors
 alias counts='sort | uniq -c | sort -nr'						# a nice command for summarising repeated information
 alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'			# to find CPU hogs
 alias cpus='grep -c ^processor /proc/cpuinfo'						# number of CPU's in a system
@@ -16349,6 +16489,7 @@ alias space='df -h'									# disk space usage
 alias sshall='logwatch --service sshd --range all --detail high --print --archives'
 alias sshtoday='logwatch --service sshd --range today --detail high --print --archives'
 alias superfind='sudo find / ! \( -path /proc -prune -o -path /tmp -prune -o -path /dev -prune -o -path /mnt -prune \) -name'
+alias temperature='acpi -tf && acpi -t'							# shows computer temperature, in Fahrenheit and Celsius
 alias top20='du -xk | sort -n | tail -20'						# find the 20 biggest directories on the current filesystem
 alias top-commands='history | awk "{print $2}" | awk "BEGIN {FS="|"} {print $1}" |sort|uniq -c | sort -rn | head -10'	# show most popular commands
 alias topforever='top -l 0 -s 10 -o cpu -n 15'						# continual 'top' listing (every 10 sec) showing top 15 CPU things
@@ -16498,6 +16639,7 @@ alias n2r='sudo /etc/init.d/nginx stop && sleep 2 && sudo /etc/init.d/nginx star
 alias ncftp='xtitle ncFTP ; ncftp'							# uses the function 'xtitle'
 alias nytimes='lynx -term=vt100 http://nytimes.com'
 alias passwords='passwd && rm -rf ~/.gnome2/keyrings/*'					# removes keyring passwords and lets you change user password
+alias pipinstall='sudo pip install'
 alias ppa-purge='sudo ppa-purge'
 alias pstree='/sw/bin/pstree -g 2 -w'
 alias puttyreload='export TERM=putty && source ~/.bashrc'
@@ -16550,7 +16692,9 @@ alias updatefonts='sudo fc-cache -vf'
 alias usbb='rsync -avz /media/usbdisk/ ~/backup/usb/'
 alias utrue='sudo truecrypt -d'
 alias viaco='task="$(basename "$(pwd)")"; if [ -f "$task.c" ]; then vi -c "set mouse=n" -c "set autoread" -c "vsplit $task.out" -c "split $task.in" -c "wincmd l" -c "wincmd H" $task.c; fi'							# setup Vim environment for USACO coding
+alias video_record='mencoder -tv driver=v4l2:device=/dev/video1:input=1:norm=ntsc:alsa=1:adevice=hw.1:audiorate=48000:immediatemode=0:amode=1 tv:// -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=1600:vhq:v4mv:keyint=250 -vf pp=de,pullup,softskip -oac mp3lame -lameopts abr:br=64:vol=2 -ffourcc xvid -o /home/me/Temp/$1.avi'	# record external video feed
 alias webcam='mplayer -cache 128 -tv driver=v4l2:width=176:height=177 -vo xv tv:// -noborder -geometry "95%:93%" -ontop'	# mplayer webcam window for screencasts
+alias webcam_record='ffmpeg -an -f video4linux2 -s 640x480 -r 15 -i /dev/video0 -vcodec mpeg4 -vtag XVID /home/me/Temp/webcam_$1.avi'	# webcam record
 alias webshare='python -c "import SimpleHTTPServer; SimpleHTTPServer.test();"'
 alias wiki='wikipedia2text -p'								# convert wiki to text output
 alias xinitrc='vim ~/.xinitrc'
@@ -16665,6 +16809,7 @@ alias smtp_trace='pkt_trace port smtp'							# to show all SMTP packets
 alias someDBdump='sudo mysqldump someDB -uroot -p > $HOME/www/_dbs/someDB.sql'
 alias spavr='gtkterm -c avr'
 # alias spavr='sudo chmod a=rw /dev/ttyUSB0; gtkterm -c avr'
+alias speedtest='speedtest --share'							# speedtest - test internet speed and share image of results
 alias spk800i='gtkterm -c k800i'
 # alias spk800i='sudo chmod a=rw /dev/rfcomm0; gtkterm -c k800i'
 alias sql='mysql -p -u root'
@@ -16709,13 +16854,16 @@ alias preinstall='sudo find / ! \( -path /proc -prune -o -path /tmp -prune -o -p
 # Permissions					 #
 ##################################################
 
-alias 000='chmod 000'
-alias 640='chmod 640'
-alias 644='chmod 644'
-alias 755='chmod 755'
-alias 775='chmod 775'
+alias 000='chmod 000 -R'
+alias 640='chmod 640 -R'
+alias 644='chmod 644 -R'									# default permission for ('~/.dmrc' file)
+alias 755='chmod 755 -R'									# default permissions for $HOME (excluding '~/.dmrc' file)
+alias 775='chmod 775 -R'
+alias 777='chmod 777 -R'
 alias mx='chmod a+x'
 alias perm='stat --printf "%a %n \n "'								# requires a file name e.g. perm file
+alias permall='777'
+alias permhome='chmod 755 -R $HOME && chmod 644 $HOME/.dmrc'
 alias restoremod='chgrp users -R .;chmod u=rwX,g=rX,o=rX -R .;chown $(pwd |cut -d / -f 3) -R .'	# restore user,group and mod of an entire website
 
 
@@ -16864,6 +17012,90 @@ alias termr='xterm -bg AntiqueWhite -fg DarkRed &'
 alias term='xterm -bg AntiqueWhite -fg Black &'
 alias xsu='xterm -fn 7x14 -bg DarkOrange4 -fg white -e su &'
 alias xtop='xterm -fn 6x13 -bg LightSlateGray -fg black -e top &'
+
+
+
+##################################################
+##################################################
+##################################################
+
+
+
+
+
+
+
+
+######################################################################################################################################################
+#----- MY CUSTOM STARTS HERE ------ MY CUSTOM STARTS HERE ------ MY CUSTOM STARTS HERE ------ MY CUSTOM STARTS HERE ------ MY CUSTOM STARTS HERE ------
+######################################################################################################################################################
+
+
+
+
+
+
+
+
+######################################################################################################################################################
+###### REQUIRES MY ULTIMATE NEMO/NAUTILUS SCRIPTS PACK AND FOR YOU TO CHANGE THE USERNAME AND DIRECTORY (NEMO OR NAUTILUS) TO YOUR OWN ######
+######################################################################################################################################################
+
+
+
+
+
+
+
+
+##################################################
+# My aliases and functions for scripts		 #
+##################################################
+
+###### defrag3
+alias defrag3-home='sudo /usr/bin/python ~/.gnome2/nemo-scripts/"File System Management"/Fragtools/Defrag-3.py ~'
+alias defrag3-root='sudo /usr/bin/python ~/.gnome2/nemo-scripts/"File System Management"/Fragtools/Defrag-3.py /root'
+alias defrag3='sudo /usr/bin/python ~/.gnome2/nemo-scripts/"File System Management"/Fragtools/Defrag-3.py'
+alias defrag3-system='sudo /usr/bin/python ~/.gnome2/nemo-scripts/"File System Management"/Fragtools/Defrag-3.py /'
+
+###### games
+alias doom='cd ~/.gnome2/nemo-scripts/Games/.doomrl && ./doomrl'
+alias dopewars='~/.gnome2/nemo-scripts/Games/Dopewars.sh'
+alias fifteen='~/.gnome2/nemo-scripts/Games/Fifteen-Puzzle.sh'
+alias guessnumber='~/.gnome2/nemo-scripts/Games/Random-Number-Guessing.sh'
+alias guessword='~/.gnome2/nemo-scripts/Games/Guessword.sh'
+alias hangman='~/.gnome2/nemo-scripts/Games/Hangman.sh'
+alias hanoi='~/.gnome2/nemo-scripts/Games/The-Towers-Of-Hanoi.sh'
+alias knights='~/.gnome2/nemo-scripts/Games/The-Knights-Tour.sh'
+alias nim='~/.gnome2/nemo-scripts/Games/Game-Of-Nim.sh'
+alias petals='~/.gnome2/nemo-scripts/Games/Petals-Around-The-Rose.sh'
+alias quakey='~/.gnome2/nemo-scripts/Games/Quakey.sh'
+alias statecaps='~/.gnome2/nemo-scripts/Games/State-Capitals.sh'
+alias worldcaps='~/.gnome2/nemo-scripts/Games/World-Capitals.sh'
+
+###### jokes and quotes
+alias blondes='shuf -n1 /home/me/.gnome2/nemo-scripts/My_Scripts/Jokes/Blonde-Jokes/.blonde-jokes.txt'
+alias chuck-norris='shuf -n1 /home/me/.gnome2/nemo-scripts/My_Scripts/Jokes/Chuck-Norris-Jokes/.chuck-norris-jokes.txt'
+alias famous-quotes='shuf -n1 /home/me/.gnome2/nemo-scripts/My_Scripts/Jokes/Famous-Quotes/.famous-quotes.txt'
+alias fortune-cookie='shuf -n1 /home/me/.gnome2/nemo-scripts/My_Scripts/Jokes/Fortune-Cookie-Quotes/.fortune-cookie-quotes.txt'
+alias fun-facts='shuf -n1 /home/me/.gnome2/nemo-scripts/My_Scripts/Jokes/Fun-Facts/.fun-facts.txt'
+alias one-liners='shuf -n1 /home/me/.gnome2/nemo-scripts/My_Scripts/Jokes/One-Liners/.one-liners.txt'
+alias yo-mama='shuf -n1 /home/me/.gnome2/nemo-scripts/My_Scripts/Jokes/Yo-Mama-Jokes/.yo-mama-jokes.txt'
+
+###### morsecode
+alias morse-di='~/.gnome2/nemo-scripts/My_Scripts/MorseCode/MorseCode.pl -d -i'
+alias morse-ds='~/.gnome2/nemo-scripts/My_Scripts/MorseCode/MorseCode.pl -d -s'
+alias morse-dt='~/.gnome2/nemo-scripts/My_Scripts/MorseCode/MorseCode.pl -d -t'
+alias morse-ei='~/.gnome2/nemo-scripts/My_Scripts/MorseCode/MorseCode.pl -e -i'
+alias morse-es='~/.gnome2/nemo-scripts/My_Scripts/MorseCode/MorseCode.pl -e -s'
+alias morse-et='~/.gnome2/nemo-scripts/My_Scripts/MorseCode/MorseCode.pl -e -t'
+alias morse='~/.gnome2/nemo-scripts/My_Scripts/MorseCode/MorseCode.pl'
+
+###### nasa wallpaper (GNOME2 only)
+alias nasa='~/.gnome2/nemo-scripts/"System Configuration"/"Wallpaper Stuff"/Random-Nasa-Wallpaper.pl'
+
+###### random music
+alias random-music='~/.gnome2/nemo-scripts/My_Scripts/Random-Music.sh'
 
 
 
